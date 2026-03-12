@@ -1,0 +1,26 @@
+*TEST PRADOWY BUFORA
+.inc tsmc180_t77a_spice.lib
+
+.include ./bufor.spice
+
+;VSQR sqr VSS 0 PULSE(0 {vdd} {tsqr/2} 1p 1p {tsqr/2} {tsqr})
+
+; stan wysoki
+;Xbufor VDD y VDD VSS BUF
+VX x VDD 0
+; stan niski
+;Xbufor VSS y VDD VSS BUF
+;X x VSS 0
+VDD VDD 0 {vdd}
+VSS VSS 0 0
+IO y VSS -15m
+
+.param vdd=1.8
+.param fsqr=100e6
+.param tsqr={1/fsqr}
+;.temp 125
+;.step temp -30 125 30
+;.step param vdd 1.62 1.98 0.06 ; test napiecia zasilania
+.tran 0 {5*tsqr} 0 {tsqr/100}
+
+.end
