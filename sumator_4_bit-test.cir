@@ -1,0 +1,36 @@
+* TEST SUMATORA 4 BITOWEGO
+.inc tsmc180_t77a_spice.lib
+
+;.include ./nowa-wersja/sumator_1_bit.spice ;test topografii sumatora
+.include ./sumator_4_bit.spice ;test topografii sumatora
+
+
+.param vdd=1.8 fclk=50e+6 tclk={1/fclk}
+;VCLK CLK VSS DC 0 PULSE(0 {vdd} {tclk/2} 0.2ns 0.2ns {tclk/2} {tclk})
+VSS VSS 0 0
+VDD VDD 0 {vdd}
+;VDD2 VDD# VDD 0
+
+;PULSE(0 {vdd} {tclk/2} 0.2ns 0.2ns {tclk/2} {tclk})
+VA1 A1 0 PULSE(0 {vdd} {tclk/2} 0.2ns 0.2ns {tclk/2} {tclk})
+VA2 A2 0 0
+VA3 A3 0 0
+VA4 A4 0 0
+
+VB1 B1 0 0
+VB2 B2 0 0
+VB3 B3 0 0
+VB4 B4 0 0
+
+VCI CI 0 0
+
+;RL S 0 1MEG
+;RL2 CO 0 1MEG
+
+;.step param fclk 30e6 100e6 10e6 ; test czestotliwosci
+.step temp -30 125 20 ; test temperaturowy
+;.step param vdd 1.62 1.98 0.06 ; test napiecia zasilania
+
+.tran 0 {2*tclk} 0 {tclk/100}
+
+.end
